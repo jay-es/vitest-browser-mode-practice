@@ -1,7 +1,6 @@
 import { test, expect, vi } from "vitest";
 import { render } from "vitest-browser-react";
-import { userEvent, page } from "@vitest/browser/context";
-
+import { page } from "@vitest/browser/context";
 import LoginForm from "./login-form";
 
 test("送信ボタンがクリックされるとユーザー名とパスワードで onSubmit が呼び出される", async () => {
@@ -9,9 +8,9 @@ test("送信ボタンがクリックされるとユーザー名とパスワー�
   render(<LoginForm onSubmit={handleSubmit} />);
   const user = { username: "michelle", password: "smith" };
 
-  await userEvent.type(page.getByLabelText(/username/i), user.username);
-  await userEvent.type(page.getByLabelText(/password/i), user.password);
-  await userEvent.click(page.getByText(/submit/i));
+  await page.getByLabelText(/username/i).fill(user.username);
+  await page.getByLabelText(/password/i).fill(user.password);
+  await page.getByText(/submit/i).click();
 
   expect(handleSubmit).toHaveBeenCalledTimes(1);
   expect(handleSubmit).toHaveBeenCalledWith(user);
@@ -21,8 +20,8 @@ test("ユーザー名が提供されていない状態で送信ボタンがク�
   const handleSubmit = vi.fn();
   render(<LoginForm onSubmit={handleSubmit} />);
 
-  await userEvent.type(page.getByLabelText(/password/i), "anything");
-  await userEvent.click(page.getByText(/submit/i));
+  await page.getByLabelText(/password/i).fill("anything");
+  await page.getByText(/submit/i).click();
 
   const errorMessage = page.getByRole("alert");
   expect(errorMessage).toHaveTextContent(/username is required/i);
@@ -33,8 +32,8 @@ test("パスワードが提供されていない状態で送信ボタンがク�
   const handleSubmit = vi.fn();
   render(<LoginForm onSubmit={handleSubmit} />);
 
-  await userEvent.type(page.getByLabelText(/username/i), "anything");
-  await userEvent.click(page.getByText(/submit/i));
+  await page.getByLabelText(/username/i).fill("anything");
+  await page.getByText(/submit/i).click();
 
   const errorMessage = page.getByRole("alert");
   expect(errorMessage).toHaveTextContent(/password is required/i);

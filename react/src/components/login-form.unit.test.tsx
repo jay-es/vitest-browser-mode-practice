@@ -2,7 +2,6 @@ import "@testing-library/jest-dom";
 import { test, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-
 import LoginForm from "./login-form";
 
 test("送信ボタンがクリックされるとユーザー名とパスワードで onSubmit が呼び出される", async () => {
