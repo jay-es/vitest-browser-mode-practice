@@ -6,9 +6,33 @@ export default mergeConfig(
   viteConfig,
   defineConfig({
     test: {
-      environment: 'jsdom',
-      exclude: [...configDefaults.exclude, '**/*.browser.test.ts', 'e2e/**'],
-      root: fileURLToPath(new URL('./', import.meta.url)),
+      projects: [
+        {
+          extends: true,
+          test: {
+            name: 'unit',
+            include: ['**/*.unit.test.ts'],
+            environment: 'jsdom',
+            exclude: [...configDefaults.exclude, '**/*.browser.test.ts', 'e2e/**'],
+            root: fileURLToPath(new URL('./', import.meta.url)),
+          },
+        },
+        {
+          extends: true,
+          test: {
+            name: 'browser',
+            include: ['**/*.browser.test.ts'],
+            browser: {
+              enabled: true,
+              provider: 'playwright',
+              // https://vitest.dev/guide/browser/playwright
+              instances: [{ browser: 'chromium' }],
+              headless: true,
+              screenshotFailures: false,
+            },
+          },
+        },
+      ],
     },
   }),
 )

@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "test:unit": "vitest",
-    "test:browser": "vitest --config=vitest.browser.config.ts",
+    "test": "vitest",
+    "test:unit": "vitest --project unit",
+    "test:browser": "vitest --project browser",
     "lint": "eslint .",
     "preview": "vite preview"
   },
